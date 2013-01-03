@@ -38,6 +38,8 @@ import Data.Foldable (forM_)
 import Blaze.ByteString.Builder (Builder)
 import Data.ByteString (ByteString)
 import Data.Enumerator (Enumerator, Iteratee, ($$), (>>==), (=$))
+import Snap.Iteratee ()
+import Control.Monad.CatchIO (MonadCatchIO)
 import qualified Blaze.ByteString.Builder as BB
 import qualified Data.Attoparsec as A
 import qualified Data.ByteString.Lazy as BL
@@ -77,7 +79,7 @@ newtype Sink p = Sink
 -- | The monad in which you can write WebSocket-capable applications
 newtype WebSockets p a = WebSockets
     { unWebSockets :: ReaderT (WebSocketsEnv p) (Iteratee (Message p) IO) a
-    } deriving (Applicative, Functor, Monad, MonadIO)
+    } deriving (Applicative, Functor, Monad, MonadIO, MonadCatchIO)
 
 -- | Receives the initial client handshake, then behaves like 'runWebSockets'.
 runWebSocketsHandshake :: Protocol p
